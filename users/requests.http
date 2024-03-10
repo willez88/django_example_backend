@@ -1,0 +1,85 @@
+@API = http://localhost:8000/api/
+@access_token = abcd
+
+### Users Registrarse como usuario
+POST {{API}}users/register/
+Content-Type: application/json
+
+{
+    "username": "user3",
+    "email": "user3@email.com",
+    "password": "usuario12345",
+    "password2": "usuario12345"
+}
+
+### Users Cambiar contraseña
+PUT {{API}}users/password-change/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "old_password": "usuario12345",
+    "password": "usuario123",
+    "password2": "usuario123"
+}
+
+### Users update
+PUT {{API}}users/2/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "first_name": "Usuario 2",
+    "last_name": "Usuario 2",
+    "username": "user2",
+    "email": "user2@email.com"
+}
+
+### Users retrieve
+GET {{API}}users/2/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### Users login
+POST {{API}}users/login/
+Content-Type: application/json
+
+### Users list
+GET {{API}}users/?username=user2
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### Users password reset
+POST {{API}}users/reset/password-reset/
+Content-Type: application/json
+
+{
+    "email": "user3@email.com"
+}
+
+### Users set password
+POST {{API}}users/reset/?uidb64=Mw&token=c3nb0n-14f5c59d04548423db1b79e7fbf7cfbe
+Content-Type: application/json
+
+{
+    "new_password1": "usuario12345",
+    "new_password2": "usuario12345"
+}
+
+### Users logout
+POST {{API}}users/logout/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "refresh_token": "abcd"
+}
+
+### Users login
+POST {{API}}users/login/
+Content-Type: application/json
+
+{
+    "username": "user3",
+    "password": "usuario12345"
+}
