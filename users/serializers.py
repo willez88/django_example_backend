@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth.forms import _unicode_ci_compare
-from django.contrib.auth.models import User
+from django.contrib.auth.models import (
+    Group,
+    User,
+)
 from django.contrib.auth import _clean_credentials
 from django.contrib.auth.signals import user_login_failed
 from django.db.models import Q
@@ -18,10 +21,10 @@ UserModel = get_user_model()
 
 
 class LoginSerializer(serializers.Serializer):
-    """
+    """!
     Clase para el login en el sistema
 
-    @author William Páez <paez.william8@gmail.com>
+    @author William Páez (paez.william8 at gmail.com)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
         GNU Public License versión 2 (GPLv2)</a>
     """
@@ -32,7 +35,7 @@ class LoginSerializer(serializers.Serializer):
     )
 
     def validate(self, attrs):
-        """
+        """!
         Meethod for validated of return serializer is correct
 
         @param attrs object with field for validate
@@ -72,10 +75,10 @@ class LoginSerializer(serializers.Serializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    """
+    """!
     Clase que registra a usuarios
 
-    @author William Páez <paez.william8@gmail.com>
+    @author William Páez (paez.william8 at gmail.com)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
         GNU Public License versión 2 (GPLv2)</a>
     """
@@ -114,15 +117,17 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])
         user.save()
+        # Se asigna el rol Usuario
+        user.groups.add(Group.objects.get(name='Usuario'))
         # Token.objects.create(user=user)
         return user
 
 
 class PasswordChangeSerializer(serializers.ModelSerializer):
-    """
+    """!
     Clase que permite actualizar la contraseña
 
-    @author William Páez <paez.william8@gmail.com>
+    @author William Páez (paez.william8 at gmail.com)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
         GNU Public License versión 2 (GPLv2)</a>
     """
@@ -151,7 +156,7 @@ class PasswordChangeSerializer(serializers.ModelSerializer):
         return attrs
 
     def validate_old_password(self, value):
-        user = self.context['request'].user
+        user = self.context['user']
         if not user.check_password(value):
             raise serializers.ValidationError(
                 {'old_password': 'Old password is not correct'}
@@ -165,10 +170,10 @@ class PasswordChangeSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    """
+    """!
     Clase que permite actualizar usuario
 
-    @author William Páez <paez.william8@gmail.com>
+    @author William Páez (paez.william8 at gmail.com)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
         GNU Public License versión 2 (GPLv2)</a>
     """
@@ -220,10 +225,10 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """
+    """!
     Clase que muestra los campos del usuario
     
-    @author William Páez <paez.william8@gmail.com>
+    @author William Páez (paez.william8 at gmail.com)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
         GNU Public License versión 2 (GPLv2)</a>
     """
@@ -234,10 +239,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PasswordResetSerializer(serializers.Serializer):
-    """
+    """!
     Clase que muestra los campos del usuario
     
-    @author William Páez <paez.william8@gmail.com>
+    @author William Páez (paez.william8 at gmail.com)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
         GNU Public License versión 2 (GPLv2)</a>
     """
@@ -253,9 +258,12 @@ class PasswordResetSerializer(serializers.Serializer):
         to_email,
         html_email_template_name=None,
     ):
+        """!
+        Método que envía un correo
+        
+        @author William Páez (paez.william8 at gmail.com)
         """
-        Send a django.core.mail.EmailMultiAlternatives to `to_email`.
-        """
+
         subject = loader.render_to_string(subject_template_name, context)
         # Email subject *must not* contain newlines
         subject = "".join(subject.splitlines())
@@ -269,11 +277,11 @@ class PasswordResetSerializer(serializers.Serializer):
         email_message.send()
 
     def get_users(self, email):
-        """Given an email, return matching user(s) who should receive a reset.
-
-        This allows subclasses to more easily customize the default policies
-        that prevent inactive users and users with unusable passwords from
-        resetting their password.
+        """!
+        Método que al recibir un correo electrónico, devuelva los usuarios
+        coincidentes que deberían recibir un reinicio
+        
+        @author William Páez (paez.william8 at gmail.com)
         """
         email_field_name = UserModel.get_email_field_name()
         active_users = UserModel._default_manager.filter(
@@ -290,9 +298,10 @@ class PasswordResetSerializer(serializers.Serializer):
         )
 
     def create(self, validated_data):
-        """
-        Generate a one-use only link for resetting password and send it to the
-        user.
+        """!
+        Metodo que genera una url de un solo uso y lo envía al usuario
+        
+        @author William Páez (paez.william8 at gmail.com)
         """
 
         email = self.validated_data['email']
@@ -331,10 +340,10 @@ class PasswordResetSerializer(serializers.Serializer):
 
 
 class SetPasswordSerializer(serializers.Serializer):
-    """
+    """!
     Clase que muestra los campos del usuario
     
-    @author William Páez <paez.william8@gmail.com>
+    @author William Páez (paez.william8 at gmail.com)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
         GNU Public License versión 2 (GPLv2)</a>
     """

@@ -6,8 +6,8 @@ POST {{API}}users/register/
 Content-Type: application/json
 
 {
-    "username": "user3",
-    "email": "user3@email.com",
+    "username": "user",
+    "email": "user@email.com",
     "password": "usuario12345",
     "password2": "usuario12345"
 }
@@ -29,10 +29,10 @@ Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 {
-    "first_name": "Usuario 2",
-    "last_name": "Usuario 2",
-    "username": "user2",
-    "email": "user2@email.com"
+    "first_name": "Admin",
+    "last_name": "Admin",
+    "username": "admin",
+    "email": "admin@email.com"
 }
 
 ### Users retrieve
@@ -80,6 +80,6 @@ POST {{API}}users/login/
 Content-Type: application/json
 
 {
-    "username": "user3",
+    "username": "admin",
     "password": "usuario12345"
 }

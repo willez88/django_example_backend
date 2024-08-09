@@ -1,0 +1,101 @@
+@API = http://localhost:8000/api/
+@access_token = abcd
+
+### people list
+GET {{API}}people/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### people create
+POST {{API}}people/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "first_name": "Nombres",
+    "last_name": "Apellidos",
+    "id_number": "V11111111",
+    "phone": "+58-416-0000000",
+    "email": "nombres@email.com",
+    "address": "Dirección",
+    "parish_id": 1,
+    "images": [
+        {
+            "id": 1
+        },
+        {
+            "id": 2
+        }
+    ]
+}
+
+### people update
+PUT {{API}}people/1/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "first_name": "Nombres",
+    "last_name": "Apellidos",
+    "id_number": "V11111111",
+    "phone": "+58-416-0000011",
+    "email": "nombres@email.com",
+    "address": "Dirección",
+    "parish_id": 1
+}
+
+### people detail
+GET {{API}}people/1/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### people destroy
+Delete {{API}}people/1/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### countries list
+GET {{API}}countries/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### countries filter
+GET {{API}}countries/?name=Venezuela
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### states list
+GET {{API}}states/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### cities list
+GET {{API}}cities/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### parishes list
+GET {{API}}parishes/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### images list
+GET {{API}}images/
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### images create
+POST {{API}}images/
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
+Authorization: Bearer {{access_token}}
+
+------WebKitFormBoundary
+Content-Disposition: form-data; name="name"
+
+imagen 1
+------WebKitFormBoundary
+Content-Disposition: form-data; name="file"; filename="image.png"
+Content-Type: image/png
+
+< /home/user/Pictures/image.png
+------WebKitFormBoundary--

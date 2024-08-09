@@ -16,18 +16,22 @@ from .utils import JwtToken, get_user
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.auth.tokens import default_token_generator
 
+from .permissions import CustomObjectPermissions
+
 
 class UserViewset(viewsets.ModelViewSet):
     """!
     Clase que crea las acciones estandar
 
-    @author William Páez <paez.william8@gmail.com>
+    @author William Páez (paez.william8 at gmail.com)
     @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
         GNU Public License versión 2 (GPLv2)</a>
     """
 
+    model = User
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [CustomObjectPermissions,]
     filterset_fields = ('username', 'first_name', 'last_name')
 
     @action(
@@ -38,7 +42,7 @@ class UserViewset(viewsets.ModelViewSet):
         """!
         Función que loguea a los usuarios y retorna el token
 
-        @author William Páez <paez.william8@gmail.com>
+        @author William Páez (paez.william8 at gmail.com)
         """
 
         if request.user.is_authenticated:
@@ -59,12 +63,12 @@ class UserViewset(viewsets.ModelViewSet):
             login(request, user_auth)
         return Response(JwtToken(user), status=201)
 
-    @action(detail=False, methods=['post'])
+    @action(detail=False, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def logout(self, request):
         """!
         Función que desloguea usuarios
 
-        @author William Páez <paez.william8@gmail.com>
+        @author William Páez (paez.william8 at gmail.com)
         """
 
         try:
@@ -84,7 +88,7 @@ class UserViewset(viewsets.ModelViewSet):
         """!
         Función que registra usuarios
 
-        @author William Páez <paez.william8@gmail.com>
+        @author William Páez (paez.william8 at gmail.com)
         """
 
         serializer = self.serializer_class(data=request.data)
@@ -101,12 +105,13 @@ class UserViewset(viewsets.ModelViewSet):
         """!
         Función que permite cambiar la contraseña a usuarios
 
-        @author William Páez <paez.william8@gmail.com>
+        @author William Páez (paez.william8 at gmail.com)
         """
 
+        user = request.user
         serializer = self.serializer_class(
             data=request.data,
-            context={'request': request}
+            context={'user': user}
         )
         serializer.is_valid(raise_exception=True)
         serializer.update(request.user, request.data)
@@ -121,7 +126,7 @@ class UserViewset(viewsets.ModelViewSet):
         """!
         Función que permite recuperar la contraseña
 
-        @author William Páez <paez.william8@gmail.com>
+        @author William Páez (paez.william8 at gmail.com)
         """
 
         serializer = self.serializer_class(
@@ -141,7 +146,7 @@ class UserViewset(viewsets.ModelViewSet):
         """!
         Función que permite establecer la nueva contraseña
 
-        @author William Páez <paez.william8@gmail.com>
+        @author William Páez (paez.william8 at gmail.com)
         """
 
         uidb64 = request.GET.get('uidb64')

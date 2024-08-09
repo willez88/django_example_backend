@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
+    'auditlog',
     'base',
     'users',
 ]
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'auditlog.middleware.AuditlogMiddleware',
 ]
 
 ROOT_URLCONF = 'django_example_backend.urls'
@@ -150,9 +152,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = BASE_DIR / 'media'
+
 STATICFILES_DIRS = (
     BASE_DIR / 'static/',
 )
+
+STATIC_ROOT = BASE_DIR / 'static_root'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -229,3 +237,9 @@ else:
     EMAIL_HOST_PASSWORD = 'password'
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     SERVER_EMAIL = 'email@email.com'
+
+# Registra todos los modelos
+AUDITLOG_INCLUDE_ALL_MODELS = True
+
+# No registra los datos cargados usando loaddata
+AUDITLOG_DISABLE_ON_RAW_SAVE = True
