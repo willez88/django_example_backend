@@ -1,6 +1,6 @@
 # Django Example Backend
 
-Sistema construido con djangorestframwwork que permite a un usuario
+Sistema construido con djangorestframework que permite a un usuario
 
     - Registrarse
     - Iniciar sesión
