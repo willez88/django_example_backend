@@ -8,8 +8,8 @@ Content-Type: application/json
 {
     "username": "user",
     "email": "user@email.com",
-    "password": "usuario12345",
-    "password2": "usuario12345"
+    "password": "password",
+    "password2": "password"
 }
 
 ### Users Cambiar contraseña
@@ -18,9 +18,9 @@ Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 {
-    "old_password": "usuario12345",
-    "password": "usuario123",
-    "password2": "usuario123"
+    "old_password": "old_password",
+    "password": "password",
+    "password2": "password"
 }
 
 ### Users update
@@ -44,6 +44,11 @@ Authorization: Bearer {{access_token}}
 POST {{API}}users/login/
 Content-Type: application/json
 
+{
+    "username": "admin",
+    "password": "password"
+}
+
 ### Users list
 GET {{API}}users/?username=user2
 Content-Type: application/json
@@ -62,8 +67,8 @@ POST {{API}}users/reset/?uidb64=Mw&token=c3nb0n-14f5c59d04548423db1b79e7fbf7cfbe
 Content-Type: application/json
 
 {
-    "new_password1": "usuario12345",
-    "new_password2": "usuario12345"
+    "new_password1": "new_password",
+    "new_password2": "new_password"
 }
 
 ### Users logout
@@ -73,13 +78,4 @@ Authorization: Bearer {{access_token}}
 
 {
     "refresh_token": "abcd"
-}
-
-### Users login
-POST {{API}}users/login/
-Content-Type: application/json
-
-{
-    "username": "admin",
-    "password": "usuario12345"
 }

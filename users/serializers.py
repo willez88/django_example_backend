@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.forms import _unicode_ci_compare
 from django.contrib.auth.models import (
     Group,
+    Permission,
     User,
 )
 from django.contrib.auth import _clean_credentials
@@ -224,6 +225,36 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         return instance
 
 
+class PermissionSerializer(serializers.ModelSerializer):
+    """!
+    Clase que muestra los campos de los permisos
+
+    @author William Páez (paez.william8 at gmail)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
+        GNU Public License versión 2 (GPLv2)</a>
+    """
+
+    class Meta:
+        model = Permission
+        fields = ('pk', 'name', 'codename',)
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    """!
+    Clase que muestra los campos de los grupos
+
+    @author William Páez (paez.william8 at gmail.com)
+    @copyright <a href='http://www.gnu.org/licenses/gpl-2.0.html'>
+        GNU Public License versión 2 (GPLv2)</a>
+    """
+
+    permissions = PermissionSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Group
+        fields = ('pk', 'name', 'permissions')
+
+
 class UserSerializer(serializers.ModelSerializer):
     """!
     Clase que muestra los campos del usuario
@@ -233,9 +264,11 @@ class UserSerializer(serializers.ModelSerializer):
         GNU Public License versión 2 (GPLv2)</a>
     """
 
+    groups = GroupSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ('pk', 'first_name', 'last_name', 'username', 'email')
+        fields = ('pk', 'first_name', 'last_name', 'username', 'email', 'groups',)
 
 
 class PasswordResetSerializer(serializers.Serializer):

@@ -50,7 +50,7 @@ class UserViewset(viewsets.ModelViewSet):
                 {
                     'non_field_errors': ['You are already authenticated']
                 },
-                status=400
+                status=status.HTTP_400_BAD_REQUEST
             )
         data = request.data
         username = data.get('username')
@@ -72,8 +72,8 @@ class UserViewset(viewsets.ModelViewSet):
         """
 
         try:
-            refresh_token = request.data['refresh_token']
-            token = RefreshToken(refresh_token)
+            refresh = request.data['refresh']
+            token = RefreshToken(refresh)
             token.blacklist()
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as error:

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
+    'corsheaders',
     'auditlog',
     'base',
     'users',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -237,6 +239,11 @@ else:
     EMAIL_HOST_PASSWORD = 'password'
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     SERVER_EMAIL = 'email@email.com'
+
+# Lista de orígenes que están autorizados a realizar solicitudes HTTP entre sitios
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8080',
+]
 
 # Registra todos los modelos
 AUDITLOG_INCLUDE_ALL_MODELS = True
